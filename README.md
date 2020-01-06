@@ -14,3 +14,6 @@ Why do we need a backend? Security mostly. Originally there was simply a Raspber
 ## TODO
 
 - Find out the lifecycle of a MQTT client.
+- Save logs to a database for debugging.
+- Save telemetry to a database and allow it to be read from the Android app
+- User accounts with access to specific devices.
