@@ -23,37 +23,33 @@ mqttClient.on('connect', () => {
         if(granted) console.log("subscribe granted ",granted);
     });
 });
-
     
-    // When a message arrives, console.log it
-    mqttClient.on('message', function (topic, message) {
-        console.log(message.toString());
-    });
+// When a message arrives, console.log it
+mqttClient.on('message', function (topic, message) {
+    console.log(message.toString());
+});
 
-    mqttClient.on('close', () => {
-        console.log(`mqtt client disconnected`);
+mqttClient.on('close', () => {
+    console.log(`mqtt client disconnected`);
+});
 
-        
-    });
+mqttClient.on('offline', () => {
+    console.log('mqtt client is offline')
 
-    mqttClient.on('offline', () => {
-        console.log('mqtt client is offline')
-
-        // Set a timer to reconnect
-        reconnectTimer()
-    });
-
-    function reconnectTimer() {
-        setTimeout(() => {
-            if(mqttClient.connected) return //we are connected now, so do nothing
-            if(!mqttClient.reconnecting){ //we are disconnected and not attempting to reconnect
-                mqttClient.reconnect()//reconnect
-            }
-            reconnectTimer()// set a timer to try reconnecting regardless of reconnecting state
-        }, 1500);
-    }
+    // Set a timer to reconnect
+    reconnectTimer()
+});
 
 
+function reconnectTimer() {
+    setTimeout(() => {
+        if(mqttClient.connected) return //we are connected now, so do nothing
+        if(!mqttClient.reconnecting){ //we are disconnected and not attempting to reconnect
+            mqttClient.reconnect()//reconnect
+        }
+        reconnectTimer()// set a timer to try reconnecting regardless of reconnecting state
+    }, 1500);
+}
 
 function publish(topic,message){
     mqttClient.publish(topic,message);
