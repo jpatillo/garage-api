@@ -7,6 +7,35 @@ admin.initializeApp({
   databaseURL: dbUrl
 });
 
+let firestore = admin.firestore();
+
+const onSignIn = (user) => {
+  
+  let transaction = firestore.runTransaction(t => {
+    var docRef = firestore.collection('users').doc(user.id);
+    return t.get(docRef)
+      .then(doc => {
+        if(doc.exists){
+          t.update(docRef, {lastSignIn: admin.firestore.FieldValue.serverTimestamp()});
+          return Promise.resolve(200)
+        }
+        t.create(docRef,createUserProfile(user));
+        return Promise.resolve(200)
+    });
+  }).then(result => {
+    console.log('Transaction success!', result);
+  }).catch(err => {
+    console.log('Transaction failure:', err);
+  });
+}
+
+function createUserProfile(user){
+  return {
+    ...user,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    lastSignIn: admin.firestore.FieldValue.serverTimestamp()
+  }
+}
 
 const getAuthToken = (req, res, next) => {
   if (
@@ -40,3 +69,4 @@ const checkIfAuthenticated = (req, res, next) => {
 };
 
 exports.checkIfAuthenticated = checkIfAuthenticated;
+exports.onSignIn = onSignIn;
