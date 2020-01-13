@@ -9,12 +9,6 @@ router.get('/:userId', firebase.checkIfAuthenticated, function(req, res, next) {
 });
 
 
-var checkIfAuthorized = function (req, res, next) {
-  
-
-  next()
-}
-
 // Triggered when a user signs in (or simply opens) the app.
 // This should only be used when the mobile app refreshes the user token.
 router.post('/:userId/', firebase.checkIfAuthenticated, function(req,res,next) {
