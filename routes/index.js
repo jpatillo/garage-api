@@ -8,11 +8,11 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Garage API' });
 });
 
-router.get('/garage/open', firebase.checkIfAuthenticated, function(req,res,next) {
+router.get('/garage/:device/door', firebase.checkIfAuthenticated, firebase.checkIfAuthorized, function(req,res,next) {
   // the device id will be in the payload so we can encrypt it
   // testing with device id 34567
   // will have to validate the device id against the user
-  mqtt.publish('garage/'+34567+'/command/door',"pop");
+  mqtt.publish('garage/'+req.params.device+'/command/door',"pop");
   res.render('index', { title: 'publish please' });
 });
 
