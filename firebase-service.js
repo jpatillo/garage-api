@@ -37,6 +37,27 @@ function createUserProfile(user){
   }
 }
 
+const checkIfAuthorized = (req, res, next) => {
+  try {
+    let docRef = firestore.collection('devices').doc(req.params.device);
+    docRef.get()
+      .then(doc => {
+        if (doc.exists && (doc.data().owner===req.query.u)) {
+          console.log('Document data:', doc.data());
+          return next();
+        }
+        return res.status(401).send({ error: 'Error finding device.' });
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+        return res.status(500).send({ error: 'Error finding device.' });
+      });
+  } catch (e) {
+    console.log(e)
+    return res.status(401).send({ error: 'You are not authorized to make this request' });
+  }
+ };
+
 const getAuthToken = (req, res, next) => {
   if (
     req.headers.authorization &&
@@ -69,4 +90,5 @@ const checkIfAuthenticated = (req, res, next) => {
 };
 
 exports.checkIfAuthenticated = checkIfAuthenticated;
+exports.checkIfAuthorized = checkIfAuthorized;
 exports.onSignIn = onSignIn;
