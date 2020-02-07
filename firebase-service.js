@@ -42,9 +42,16 @@ const checkIfAuthorized = (req, res, next) => {
     let docRef = firestore.collection('devices').doc(req.params.device);
     docRef.get()
       .then(doc => {
-        if (doc.exists && (doc.data().owner===req.query.u)) {
-          console.log('Document data:', doc.data());
-          return next();
+        if (doc.exists){
+          if(doc.data().owner===req.query.u) {
+            console.log('Document data:', doc.data());
+            return next();
+          }
+          for(var user in doc.data().guests){
+            if(user===req.query.u && user.enable)
+              return next();
+          }
+          return res.status(401).send({error: 'User not authorized.'})
         }
         return res.status(401).send({ error: 'Error finding device.' });
       })
