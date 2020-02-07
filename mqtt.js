@@ -7,6 +7,9 @@ const password = process.env.GARAGEMQTTPASS
 
 var mqttClient = mqtt.connect(host, {clientId:client, username:username, password:password});
 
+const topic_prefix= "garage/+/";
+
+
 // Mqtt error calback
 mqttClient.on('error', (err) => {
     console.log(err);
@@ -18,7 +21,7 @@ mqttClient.on('connect', () => {
     console.log(`mqtt client connected`);
     
     // mqtt subscriptions
-    mqttClient.subscribe('garage/+/telemetry/#', {qos: 1}, function(err,granted){
+    mqttClient.subscribe(topic_prefix+'telemetry/#', {qos: 1}, function(err,granted){
         if(err) console.log("subscribe error ",err);
         if(granted) console.log("subscribe granted ",granted);
     });
@@ -52,8 +55,8 @@ function reconnectTimer() {
 }
 
 function publish(topic,message){
-    mqttClient.publish(topic,message);
-    console.log("publishing message: "+topic);
+    mqttClient.publish(topic_prefix+topic,message);
+    console.log("publishing message: "+topic_prefix+topic);
 }
 
 
