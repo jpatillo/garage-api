@@ -17,3 +17,9 @@ Why do we need a backend? Security mostly. Originally there was simply a Raspber
 - Save logs to a database for debugging.
 - Save telemetry to a database and allow it to be read from the Android app
 - User accounts with access to specific devices.
+
+## Latest
+
+- Added support for a guest user to open a garage door.
+ - We will now need a way to create a guest
+ - We will now need a way to select which door in the app
