@@ -1,12 +1,13 @@
-const mqtt = require('mqtt');
+const mqtt      = require('mqtt');
 var MQTTPattern = require("mqtt-pattern");
 var firebase    = require('./firebase-service');
 var moment      = require('moment')
 
-const host = process.env.MQTTHOST
-const client = process.env.GARAGEMQTTID
-const username = process.env.GARAGEMQTTUSER
-const password = process.env.GARAGEMQTTPASS
+
+const host      = process.env.MQTTHOST
+const client    = process.env.GARAGEMQTTID
+const username  = process.env.GARAGEMQTTUSER
+const password  = process.env.GARAGEMQTTPASS
 
 var mqttClient = mqtt.connect(host, {clientId:client, username:username, password:password});
 
@@ -58,7 +59,9 @@ function reconnectTimer() {
 }
 
 function publish(topic,message){
-    mqttClient.publish(topic_prefix+topic,message);
+    mqttClient.publish(topic_prefix+topic,message,function(err){
+        if(err) console.log(err)
+    });
     console.log("publishing message: "+topic_prefix+topic);
 }
 
