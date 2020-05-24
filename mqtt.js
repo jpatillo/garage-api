@@ -8,7 +8,7 @@ const host      = process.env.MQTTHOST
 const client    = process.env.GARAGEMQTTID
 const username  = process.env.GARAGEMQTTUSER
 const password  = process.env.GARAGEMQTTPASS
-
+console.log('client',client)
 var mqttClient = mqtt.connect(host, {clientId:client, username:username, password:password});
 
 const topic_prefix= "garage/+/";
