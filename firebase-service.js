@@ -43,7 +43,7 @@ const checkIfAuthorized = (req, res, next) => {
     docRef.get()
       .then(doc => {
         if (doc.exists && (doc.data().owner===req.query.u)) {
-          console.log('Document data:', doc.data());
+          console.log('Authorization check - Document data:', doc.data());
           return next();
         }
         return res.status(401).send({ error: 'Error finding device.' });
@@ -58,7 +58,7 @@ const checkIfAuthorized = (req, res, next) => {
   }
  };
 
- 
+
 const getAuthToken = (req, res, next) => {
   if (
     req.headers.authorization &&
