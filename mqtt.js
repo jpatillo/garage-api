@@ -9,7 +9,7 @@ const client    = process.env.GARAGEMQTTID
 const username  = process.env.GARAGEMQTTUSER
 const password  = process.env.GARAGEMQTTPASS
 
-var mqttClient = mqtt.connect(host, {port: 1883, clientId:client, username:username, password:password});
+var mqttClient = mqtt.connect({host:host, port: 1883}, {clientId:client, username:username, password:password});
 
 const topic_prefix= "garage/+/";
 
@@ -59,10 +59,10 @@ function reconnectTimer() {
 }
 
 function publish(topic,message){
-    mqttClient.publish(topic_prefix+topic,message,function(err){
+    mqttClient.publish(topic,message,function(err){
         if(err) console.log(err)
     });
-    console.log("publishing message: "+topic_prefix+topic);
+    console.log("publishing message: "+topic);
 }
 
 
